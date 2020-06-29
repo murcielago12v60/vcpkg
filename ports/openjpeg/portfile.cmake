@@ -13,7 +13,7 @@ vcpkg_configure_cmake(
     PREFER_NINJA
     OPTIONS -DBUILD_CODEC:BOOL=OFF
             -DOPENJPEG_INSTALL_PACKAGE_DIR=share/openjpeg
-            -DOPENJPEG_INSTALL_INCLUDE_DIR=include
+            -DOPENJPEG_INSTALL_INCLUDE_DIR=include/openjpeg
 )
 
 vcpkg_install_cmake()
@@ -22,14 +22,14 @@ file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 
 vcpkg_fixup_cmake_targets()
 
-file(READ ${CURRENT_PACKAGES_DIR}/include/openjpeg.h OPENJPEG_H)
+file(READ ${CURRENT_PACKAGES_DIR}/include/openjpeg/openjpeg.h OPENJPEG_H)
 if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
     string(REPLACE "defined(OPJ_STATIC)" "1" OPENJPEG_H "${OPENJPEG_H}")
 else()
     string(REPLACE "defined(OPJ_STATIC)" "0" OPENJPEG_H "${OPENJPEG_H}")
 endif()
 string(REPLACE "defined(DLL_EXPORT)" "0" OPENJPEG_H "${OPENJPEG_H}")
-file(WRITE ${CURRENT_PACKAGES_DIR}/include/openjpeg.h "${OPENJPEG_H}")
+file(WRITE ${CURRENT_PACKAGES_DIR}/include/openjpeg/openjpeg.h "${OPENJPEG_H}")
 
 # Handle copyright
 file(COPY ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/openjpeg)
